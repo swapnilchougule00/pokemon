@@ -16,11 +16,7 @@ const PokemonList = () => {
   const limit = 12;
 
   useEffect(() => {
-    try {
-      fetchPokemon();
-    } catch (err) {
-      console.log(err);
-    }
+    fetchPokemon();
   }, [offset]);
 
   const onSelectPokemon = (p) => {
@@ -29,22 +25,29 @@ const PokemonList = () => {
 
   const fetchPokemon = async () => {
     setLoading(true);
-    const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`,
-    );
-    const data = await response.json();
-    const results = await Promise.all(
-      data.results.map(async (pokemons) => {
-        const res = await fetch(pokemons.url);
-        return res.json();
-      }),
-    );
-    setPokemon(results);
-    setLoading(false);
+    try {
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`,
+      );
+      const data = await response.json();
+      const results = await Promise.all(
+        data.results.map(async (pokemons) => {
+          const res = await fetch(pokemons.url);
+          return res.json();
+        }),
+      );
+      setPokemon(results);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
+
   if (loading) {
     return <Loader />;
   }
+
   if (selectedPoekmon.id) {
     return (
       <PokemonDetails
