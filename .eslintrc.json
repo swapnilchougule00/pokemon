@@ -24,6 +24,7 @@
   },
   "plugins": ["react", "react-hooks", "jsx-a11y", "import", "prettier"],
   "rules": {
+    "arrow-body-style": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js"] }],
     "import/extensions": [
